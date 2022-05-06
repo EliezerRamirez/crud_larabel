@@ -14,10 +14,11 @@ class productsController extends Controller
 {
     const paginate=5;
     public function index(Request $request){
-
+        
         $products= datos::paginate(5);
         $buzcar=$request->get('buzcar');
-        #$products=datos::where('lastname','=','1')->where('name','like','%'.$buzcar.'%')->paginate(5);
+
+        $products=datos::where('name','like','%'.$buzcar.'%')->orWhere('lastname','like','%'.$buzcar.'%')->paginate(5);
         return view('layouts/datos/index', compact('products','buzcar'));
         
     }
@@ -36,7 +37,7 @@ class productsController extends Controller
        $products->save();
        
        $products= datos::all();
-       return view('layouts/datos/index', compact('products'));
+       return redirect('/datos');
     }
 
     public function destroy($id){
@@ -58,6 +59,5 @@ class productsController extends Controller
             'row'=>datos::find($id)
         ]);
     }
-}
-
+};
 
